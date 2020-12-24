@@ -9,10 +9,11 @@ provider "azurerm" {
 
 terraform {
   backend "azurerm" {
-    storage_account_name = "cicdtestautomation"
-    container_name       = "cicdtestautomation"
-    key                  = "cicdtestautomation"
-    access_key           = "2AF1vRW9lGqLaiK79jE44hJypgrhnrDDyDr8vRRCMvtQpvlRJG2MbEnKfYHF68jN+wM0GJgcqZx2ws6W+B8FOQ=="
+    resource_group_name  = "${var.resource_group}"
+    storage_account_name = "udacityensureqltyrelc03"
+    container_name       = "udacityensureqltyrelc03"
+    key                  = "tfstate"
+    access_key           = "rctCztMN6blqXWbc/ZpamqhDybc0Lh6Ua2Ip04LvZAYgZaynA5vUpjNsyPxAPU5fLKW5wCl9ZBrJfIaalINbxQ=="
   }
 }
 
@@ -61,7 +62,7 @@ module "publicip" {
 
 module "vm" {
   source         = "./modules/vm"
-  name           = "ci-cd-test-automation"
+  name           = "testautomation-vm"
   location       = "${var.location}"
   subnet_id      = module.network.subnet_id_test
   resource_group = "${module.resource_group.resource_group_name}"
