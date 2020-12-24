@@ -7,9 +7,9 @@ tenant_id = "d70cd2c5-d2c5-4be9-93eb-542d93cc6b89"
 # Resource Group/Location
 location = "East US"
 resource_group = "myudacityensureqltyrelc03-rg"
-application_type = "myudacityensureqltyrelc03-was"
+application_type = "EQR"
 
 # Network
-virtual_network_name = "myudacityensureqltyrelc03-vnet"
+virtual_network_name = "myudacityensureqltyrelc03-VNET"
 address_space = ["10.5.0.0/16"]
 address_prefix_test = "10.5.1.0/24"
