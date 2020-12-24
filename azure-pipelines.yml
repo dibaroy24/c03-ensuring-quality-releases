@@ -86,6 +86,59 @@ stages:
             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
             commandOptions: '-auto-approve'
             environmentServiceNameAzureRM: '$(azuresubscription)'
-        
+
+- stage: Build
+  displayName: Build
+  jobs:
+  - job: Build
+    pool: 
+      name: Hosted Ubuntu 1804
+    steps:
+      - task: ArchiveFiles@2
+        displayName: 'Archive FakeRestAPI'
+        inputs:
+          rootFolderOrFile: '$(System.DefaultWorkingDirectory)/fakerestapi'
+          includeRootFolder: false
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/$fakerestapi-(Build.BuildId).zip'
+          replaceExistingArchive: true
+      - task: PublishBuildArtifacts@1
+        displayName: 'Upload FakeRestAPI Package'
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/$fakerestapi-(Build.BuildId).zip'
+          ArtifactName: 'fakerestapi-drop'
+          # publishLocation: 'Container'
+      - task: ArchiveFiles@2
+        displayName: 'Archive Selenium files'
+        inputs:
+          rootFolderOrFile: '$(Build.BinariesDirectory)/automatedtesting/selenium'
+          includeRootFolder: false
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/$selenium-tests-(Build.BuildId).zip'
+          replaceExistingArchive: true
+      - publish: $(Build.ArtifactStagingDirectory)/$selenium-tests-(Build.BuildId).zip
+        artifact: selenium
+- stage: WebAppDeployment
+  displayName: Web App Deployment
+  jobs:
+  - deployment: FakeRestAPI
+    pool:
+      vmImage: 'Ubuntu-18.04'
+    environment: 'TEST'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - task: AzureWebApp@1
+              displayName: 'Deploy Azure Web App'
+              inputs:
+                azureSubscription: 'Azure subscription 1(f8815ca1-2653-4eca-b987-4de651bf2b5c)'
+                appType: 'webApp'
+                appName: 'ensureqltyrelc03-WAS'
+                package: '$(Pipeline.Workspace)/fakerestapi-drop/$fakerestapi-(Build.BuildId).zip'
+                deploymentMethod: 'auto'
+  - deployment: 
+  
+
 
 
