@@ -208,8 +208,25 @@ stages:
           displayName: Run Data Validation Tests
           inputs:
             script: 'newman run automatedtesting/postman/DataValidationTestSuite.json -e automatedtesting/postman/DataValidationTestSuite.Environment.json --delay-request 5000 --bail newman -x --reporters cli,junit --reporter-junit-export Results/DataValidationTests.xml'
-            workingDirectory: '$(System.DefaultWorkingDirectory)$(System.DefaultWorkingDirectory)'
-            
+            workingDirectory: '$(System.DefaultWorkingDirectory)'
+          continueOnError: true
+        - task: CmdLine@2
+          inputs:
+            script: 'ls'
+            workingDirectory: '$(System.DefaultWorkingDirectory)'
+        - task: PublishTestResults@2
+          displayName: Publish Postman Test Reports
+          inputs:
+            testResultsFormat: 'JUnit'
+            testResultsFiles: '$(System.DefaultWorkingDirectory)/Results/*.xml'
+            searchFolder: $(System.DefaultWorkingDirectory)
+- stage: JMeterTests
+  displayName: JMeter Tests
+  jobs:
+    - job: JMeterTests
+      displayName: JMeter Tests
+      steps:
+        
   
 
 
