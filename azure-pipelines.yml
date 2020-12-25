@@ -93,7 +93,7 @@ stages:
   jobs:
   - job: Build
     pool: 
-      name: Hosted Ubuntu 1804
+      name: Hosted Ubuntu 1604
     steps:
       - task: ArchiveFiles@2
         displayName: 'Archive FakeRestAPI'
@@ -125,7 +125,7 @@ stages:
   jobs:
   - deployment: FakeRestAPI
     pool:
-      vmImage: 'Ubuntu-18.04'
+      vmImage: 'Ubuntu-16.04'
     environment: 'WAS-TEST'
     strategy:
       runOnce:
