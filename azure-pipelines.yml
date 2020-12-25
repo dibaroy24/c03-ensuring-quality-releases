@@ -18,7 +18,7 @@ stages:
           inputs:
             knownHostsEntry: 'default'
             sshPublicKey: 'id_rsa.pub'
-            sshKeySecureFile: 'id_rsa'
+            sshKeySecureFile: 'id_rsa.pub'
         - task: Bash@3
           inputs:
             targetType: 'inline'
