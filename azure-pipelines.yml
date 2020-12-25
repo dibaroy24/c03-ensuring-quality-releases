@@ -118,13 +118,14 @@ stages:
           replaceExistingArchive: true
       - publish: $(Build.ArtifactStagingDirectory)/$selenium-tests-(Build.BuildId).zip
         artifact: selenium
+        
 - stage: WebAppDeployment
   displayName: Web App Deployment
   jobs:
   - deployment: FakeRestAPI
     pool:
       vmImage: 'Ubuntu-18.04'
-    environment: 'TEST'
+    environment: 'WAS-TEST'
     strategy:
       runOnce:
         deploy:
@@ -132,12 +133,83 @@ stages:
             - task: AzureWebApp@1
               displayName: 'Deploy Azure Web App'
               inputs:
-                azureSubscription: 'Azure subscription 1(f8815ca1-2653-4eca-b987-4de651bf2b5c)'
+                azureSubscription: '$(azuresubscription)'
                 appType: 'webApp'
                 appName: 'ensureqltyrelc03-WAS'
                 package: '$(Pipeline.Workspace)/fakerestapi-drop/$fakerestapi-(Build.BuildId).zip'
                 deploymentMethod: 'auto'
-  - deployment: 
+  - deployment: VMDeploy
+    displayName: VM Deploy
+    environment:
+      name: 'VM-TEST'
+      resourceType: VirtualMachine
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - task: Bash@3
+              displayName: 'Install Dependencies'
+              inputs:
+                targetType: 'inline'
+                script: |
+                  #! /bin/bash
+                                  
+                  sudo apt-get upgrade -y
+                  sudo apt-get install python3-pip -y
+                  sudo apt-get install unzip -y
+                  sudo apt-get install -y chromium-browser
+                  pip3 install selenium
+                                  
+                  # download chrome driver
+                  FILE=chromedriver_linux64.zip
+                  if [ -f "$FILE" ]; then
+                    echo "$FILE exists."
+                  else
+                    wget https://chromedriver.storage.googleapis.com/2.41/chromedriver_linux64.zip
+                  fi
+                  # install chrome driver
+                  unzip chromedriver_linux64.zip
+                  sudo mv chromedriver /usr/bin/chromedriver
+                  sudo chown root:root /usr/bin/chromedriver
+                  sudo chmod +x /usr/bin/chromedriver
+                  chromium-browser -version
+                  chromedriver --version
+                  # agent log analytics
+                  wget https://raw.githubusercontent.com/Microsoft/OMS-Agent-for-Linux/master/installer/scripts/onboard_agent.sh && sh onboard_agent.sh -w dbf2bd83-6d47-436b-a499-a2b566def8fe -s MuSR8Ti5MMi0E+9+1NM4NxCxFqJcfLzuGD0EtGhjXo3Vhy/THcSdCf1WyQnkXafD+6DiFjiOAEfJiQh6EbZVeg== -d opinsights.azure.com
+            - download: current
+              displayName: 'Download Selenium'
+              artifact: selenium
+            - task: Bash@3
+              displayName: UI Tests
+              inputs:
+                targetType: 'inline'
+                script: |
+                  unzip -o $(Pipeline.Workspace)/selenium/selenium-tests-(Build.BuildId).zip -d .
+                  sudo mkdir /var/logs
+                  python3 uitests.py > ui-logs.log
+                  sudo mv ui-logs.log /var/logs
+
+- stage: IntegrationTests
+  displayName: Integration Tests
+  jobs:
+    - job: PostmanTests
+      displayName: Postman Tests
+      steps:
+        - task: NodeTool@0
+          displayName: Install Node v12.X
+          inputs:
+            versionSpec: '12.x'
+        - task: CmdLine@2
+          displayName: Install Newman
+          inputs:
+            script: 'npm install newman'
+            workingDirectory: '$(System.DefaultWorkingDirectory)'
+        - task: CmdLine@2
+          displayName: Run Data Validation Tests
+          inputs:
+            script: 'newman run automatedtesting/postman/DataValidationTestSuite.json -e automatedtesting/postman/DataValidationTestSuite.Environment.json --delay-request 5000 --bail newman -x --reporters cli,junit --reporter-junit-export Results/DataValidationTests.xml'
+            workingDirectory: '$(System.DefaultWorkingDirectory)$(System.DefaultWorkingDirectory)'
+            
   
 
 
