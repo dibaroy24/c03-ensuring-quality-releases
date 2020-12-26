@@ -31,9 +31,9 @@ stages:
             scriptType: 'bash'
             scriptLocation: 'inlineScript'
             inlineScript: |
-              call az storage account create --name $(terraformstorageaccount) --resource-group $(terraformstoragerg) --location eastus --sku Standard_LRS
-              call az storage container create --name terraform --account-name $(terraformstorageaccount)         
-              call az storage account keys list -g $(terraformstoragerg) -n $(terraformstorageaccount)
+              az storage account create --name $(terraformstorageaccount) --resource-group $(terraformstoragerg) --location eastus --sku Standard_LRS
+              az storage container create --name terraform --account-name $(terraformstorageaccount)         
+              az storage account keys list -g $(terraformstoragerg) -n $(terraformstorageaccount)
         - task: AzurePowerShell@5
           displayName: Azure PowerShell script to get the storage key
           inputs:
