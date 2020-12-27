@@ -31,6 +31,7 @@ stages:
             scriptType: 'bash'
             scriptLocation: 'inlineScript'
             inlineScript: |
+              az group create --name $(terraformstoragerg) --location eastus
               az storage account create --name $(terraformstorageaccount) --resource-group $(terraformstoragerg) --location eastus --sku Standard_LRS
               az storage container create --name terraform --account-name $(terraformstorageaccount)         
               az storage account keys list -g $(terraformstoragerg) -n $(terraformstorageaccount)
