@@ -7,7 +7,7 @@ tenant_id = "d70cd2c5-d2c5-4be9-93eb-542d93cc6b89"
 # Resource Group/Location
 location = "East US"
 resource_group = "myudacityensureqltyrelc03-rg"
-application_type = "EQR"
+application_type = "udacityensureqltyrel"
 
 # Network
 virtual_network_name = "myudacityensureqltyrelc03-VNET"
