@@ -102,12 +102,12 @@ stages:
           rootFolderOrFile: '$(System.DefaultWorkingDirectory)/fakerestapi'
           includeRootFolder: false
           archiveType: 'zip'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/$fakerestapi-(Build.BuildId).zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/fakerestapi-$(Build.BuildId).zip'
           replaceExistingArchive: true
       - task: PublishBuildArtifacts@1
         displayName: 'Upload FakeRestAPI Package'
         inputs:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)/$fakerestapi-(Build.BuildId).zip'
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/fakerestapi-$(Build.BuildId).zip'
           ArtifactName: 'fakerestapi-drop'
           # publishLocation: 'Container'
       - task: ArchiveFiles@2
@@ -116,9 +116,9 @@ stages:
           rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
           includeRootFolder: false
           archiveType: 'zip'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/$selenium-tests-(Build.BuildId).zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/selenium-tests.zip'
           replaceExistingArchive: true
-      - publish: $(Build.ArtifactStagingDirectory)/$selenium-tests-(Build.BuildId).zip
+      - publish: $(Build.ArtifactStagingDirectory)/selenium-tests.zip
         artifact: selenium
         
 - stage: WebAppDeployment
@@ -137,8 +137,8 @@ stages:
               inputs:
                 azureSubscription: '$(azuresubscription)'
                 appType: 'webApp'
-                appName: 'ensureqltyrelc03-WAS'
-                package: '$(Pipeline.Workspace)/fakerestapi-drop/$fakerestapi-(Build.BuildId).zip'
+                appName: 'udacityensureqltyrel-WAS'
+                package: '$(Pipeline.Workspace)/fakerestapi-drop/fakerestapi-$(Build.BuildId).zip'
                 deploymentMethod: 'auto'
   - deployment: VMDeploy
     displayName: VM Deploy
@@ -178,18 +178,32 @@ stages:
                   chromedriver --version
                   # agent log analytics
                   wget https://raw.githubusercontent.com/Microsoft/OMS-Agent-for-Linux/master/installer/scripts/onboard_agent.sh && sh onboard_agent.sh -w dbf2bd83-6d47-436b-a499-a2b566def8fe -s MuSR8Ti5MMi0E+9+1NM4NxCxFqJcfLzuGD0EtGhjXo3Vhy/THcSdCf1WyQnkXafD+6DiFjiOAEfJiQh6EbZVeg== -d opinsights.azure.com
-            - download: current
-              displayName: 'Download Selenium'
-              artifact: selenium
-            - task: Bash@3
-              displayName: UI Tests
-              inputs:
-                targetType: 'inline'
-                script: |
-                  unzip -o $(Pipeline.Workspace)/selenium/selenium-tests-(Build.BuildId).zip -d .
-                  sudo mkdir /var/logs
-                  python3 uitests.py > ui-logs.log
-                  sudo mv ui-logs.log /var/logs
+
+- stage: UITests
+  displayName: UI Tests
+  jobs:
+  - deployment: VMRunUITests
+    displayName: Run Selenium UI Tests
+    environment:
+      name:  'VM-TEST'
+      resourceType: VirtualMachine
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            displayName: 'Download Selenium'
+            artifact: selenium
+          - task: Bash@3
+            displayName: UI Tests
+            inputs:
+              targetType: 'inline'
+              script: |
+                unzip -o $(Pipeline.Workspace)/selenium/selenium-tests.zip -d .
+                sudo mkdir /var/logs
+                python3 uitests.py > ui-logs.log
+                cat ui-logs.log
+                sudo mv ui-logs.log /var/logs
 
 - stage: IntegrationTests
   displayName: Integration Tests
@@ -222,6 +236,7 @@ stages:
             testResultsFormat: 'JUnit'
             testResultsFiles: '$(System.DefaultWorkingDirectory)/Results/*.xml'
             searchFolder: $(System.DefaultWorkingDirectory)
+
 - stage: JMeterTests
   displayName: JMeter Tests
   jobs:
