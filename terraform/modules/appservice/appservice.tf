@@ -1,4 +1,4 @@
-resource "azurerm_app_service_plan" "test" {
+resource "azurerm_app_service_plan" "eqrappservplan" {
   name                = "${var.application_type}-ASP"
   location            = var.location
   resource_group_name = var.resource_group
@@ -9,7 +9,7 @@ resource "azurerm_app_service_plan" "test" {
   }
 }
 
-resource "azurerm_app_service" "test" {
+resource "azurerm_app_service" "eqrappserv" {
   name                = "${var.application_type}-${var.resource_type}"
   location            = var.location
   resource_group_name = var.resource_group
