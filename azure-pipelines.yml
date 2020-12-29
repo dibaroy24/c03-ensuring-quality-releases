@@ -125,9 +125,10 @@ stages:
   displayName: Web App Deployment
   jobs:
   - deployment: FakeRestAPI
+    displayName: FakeRestAPI Deploy
     pool:
       vmImage: 'Ubuntu-16.04'
-    environment: 'WAS-TEST'
+    environment: 'TEST-WAS'
     strategy:
       runOnce:
         deploy:
@@ -142,9 +143,12 @@ stages:
                 deploymentMethod: 'auto'
   - deployment: VMDeploy
     displayName: VM Deploy
+    pool:
+      vmImage: 'Ubuntu-16.04'
     environment:
-      name: 'VM-TEST'
+      name: 'TEST-VM'
       resourceType: VirtualMachine
+      tags: UITesting
     strategy:
       runOnce:
         deploy:
