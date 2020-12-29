@@ -69,5 +69,5 @@ module "virtual_machine" {
 
   public_ip_address_id = module.public_ip.public_ip_address_id
   public_subnet_id     = module.network.subnet_id_test
-  admin_username       = "adminuser"
+  admin_username       = "vmadmin"
 }

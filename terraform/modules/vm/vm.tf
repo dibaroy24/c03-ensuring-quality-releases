@@ -15,7 +15,7 @@ resource "azurerm_linux_virtual_machine" "test" {
   name                  = "${var.application_type}-${var.resource_type}"
   location              = var.location
   resource_group_name   = var.resource_group
-  size                  = "Basic_A1"
+  size                  = "Standard_B2s"
   admin_username        = var.admin_username
 
   network_interface_ids = [
@@ -33,7 +33,7 @@ resource "azurerm_linux_virtual_machine" "test" {
   source_image_reference {
     publisher = "Canonical"
     offer     = "UbuntuServer"
-    sku       = "18.04-LTS"
+    sku       = "16.04-LTS"
     version   = "latest"
   }
 }
