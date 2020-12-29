@@ -1,10 +1,10 @@
-resource "azurerm_virtual_network" "eqrvnet" {
+resource "azurerm_virtual_network" "test" {
   name                 = "${var.application_type}-${var.resource_type}"
   address_space        = var.address_space
   location             = var.location
   resource_group_name  = var.resource_group
 }
-resource "azurerm_subnet" "eqrsubnet" {
+resource "azurerm_subnet" "test" {
   name                 = "${var.application_type}-SUB${var.resource_type}"
   resource_group_name  = var.resource_group
   virtual_network_name = azurerm_virtual_network.test.name

@@ -1,4 +1,4 @@
-resource "azurerm_network_interface" "eqrnic" {
+resource "azurerm_network_interface" "test" {
   name                = "${var.application_type}-${var.resource_type}-NIC"
   location            = var.location
   resource_group_name = var.resource_group
@@ -11,7 +11,7 @@ resource "azurerm_network_interface" "eqrnic" {
   }
 }
 
-resource "azurerm_linux_virtual_machine" "eqrvm" {
+resource "azurerm_linux_virtual_machine" "test" {
   name                  = "${var.application_type}-${var.resource_type}"
   location              = var.location
   resource_group_name   = var.resource_group
