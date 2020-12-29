@@ -7,6 +7,6 @@ resource "azurerm_virtual_network" "eqrvnet" {
 resource "azurerm_subnet" "eqrsubnet" {
   name                 = "${var.application_type}-SUB${var.resource_type}"
   resource_group_name  = var.resource_group
-  virtual_network_name = azurerm_virtual_network.eqrvnet.name
+  virtual_network_name = azurerm_virtual_network.test.name
   address_prefixes     = [ var.address_prefix_test ]
 }

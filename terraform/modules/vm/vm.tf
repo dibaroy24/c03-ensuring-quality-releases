@@ -19,7 +19,7 @@ resource "azurerm_linux_virtual_machine" "eqrvm" {
   admin_username        = var.admin_username
 
   network_interface_ids = [
-    azurerm_network_interface.eqrnic.id
+    azurerm_network_interface.test.id
   ]
   
   admin_ssh_key {
