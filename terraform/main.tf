@@ -65,7 +65,7 @@ module "virtual_machine" {
   location             = var.location
   resource_group       = module.resource_group.resource_group_name
   application_type     = var.application_type
-  resource_type        = "VM"
+  resource_type        = "VirtualMachine"
 
   public_ip_address_id = module.public_ip.public_ip_address_id
   public_subnet_id     = module.network.subnet_id_test
