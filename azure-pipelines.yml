@@ -102,12 +102,12 @@ stages:
           rootFolderOrFile: '$(System.DefaultWorkingDirectory)/fakerestapi'
           includeRootFolder: false
           archiveType: 'zip'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/fakerestapi-$(Build.BuildId).zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
           replaceExistingArchive: true
       - task: PublishBuildArtifacts@1
         displayName: 'Upload FakeRestAPI Package'
         inputs:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)/fakerestapi-$(Build.BuildId).zip'
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
           ArtifactName: 'fakerestapi-drop'
           # publishLocation: 'Container'
       - task: ArchiveFiles@2
@@ -125,7 +125,7 @@ stages:
   displayName: Web App Deployment
   jobs:
   - deployment: FakeRestAPI
-    displayName: FakeRestAPI Deploy
+    # displayName: FakeRestAPI Deploy
     pool:
       vmImage: 'Ubuntu-16.04'
     environment: 'TEST-WAS'
@@ -139,7 +139,7 @@ stages:
                 azureSubscription: '$(azuresubscription)'
                 appType: 'webApp'
                 appName: 'udacityensureqltyrel-WAS'
-                package: '$(Pipeline.Workspace)/fakerestapi-drop/fakerestapi-$(Build.BuildId).zip'
+                package: '$(Pipeline.Workspace)/fakerestapi-drop/$(Build.BuildId)-fakerestapi.zip'
                 deploymentMethod: 'auto'
   - deployment: VMDeploy
     displayName: VM Deploy
@@ -148,7 +148,7 @@ stages:
     environment:
       name: 'TEST-VM'
       resourceType: VirtualMachine
-      tags: UITesting
+      tags: 'UITesting'
     strategy:
       runOnce:
         deploy:
