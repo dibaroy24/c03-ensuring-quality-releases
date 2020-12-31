@@ -95,7 +95,8 @@ stages:
             ScriptType: 'InlineScript'
             Inline: |
               # Use the Azure Resource Manager cmdlets to get the public IP address of an Azure virtual machine
-              $linuxvmpublicip=Get-AzVM -ResourceGroupName 'myudacityensureqltyrelc03-rg' -Name 'udacityensureqltyrel-VM' | Get-AzPublicIpAddress
+              Install-Module AzureRm
+              $linuxvmpublicip=Get-AzureRmVM -ResourceGroupName 'myudacityensureqltyrelc03-rg' -Name 'udacityensureqltyrel-VM' | Get-AzureRmPublicIpAddress
             azurePowerShellVersion: 'LatestVersion'
         - task: AzureCLI@2
           displayName: Configure the VM for deployment
