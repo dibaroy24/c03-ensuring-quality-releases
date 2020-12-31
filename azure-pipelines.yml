@@ -106,8 +106,8 @@ stages:
             scriptLocation: 'inlineScript'
             inlineScript: |
               $linuxvmpublicip=az vm show --resource-group myudacityensureqltyrelc03-rg --name udacityensureqltyrel-VM -d --query [publicIps] -o tsv
-              ssh vmadmin@$linuxvmpublicip
-              mkdir azagent;cd azagent;curl -fkSL -o vstsagent.tar.gz https://vstsagentpackage.azureedge.net/agent/2.179.0/vsts-agent-linux-x64-2.179.0.tar.gz;tar -zxvf vstsagent.tar.gz; if [ -x "$(command -v systemctl)" ]; then ./config.sh --environment --environmentname "TEST-VM" --acceptteeeula --agent $HOSTNAME --url https://dev.azure.com/dibakarroy24/ --work _work --projectname 'ensuring-quality-releases' --auth PAT --token 2uzhhxizmnmo7ht3475bdk665sqkjryfdxl27b3rf2h2dcgax67q --runasservice; sudo ./svc.sh install; sudo ./svc.sh start; else ./config.sh --environment --environmentname "TEST-VM" --acceptteeeula --agent $HOSTNAME --url https://dev.azure.com/dibakarroy24/ --work _work --projectname 'ensuring-quality-releases' --auth PAT --token 2uzhhxizmnmo7ht3475bdk665sqkjryfdxl27b3rf2h2dcgax67q; ./run.sh; fi
+              ssh -i /home/vsts/work/_temp/id-rsa vmadmin@$linuxvmpublicip
+              mkdir azagent;cd azagent;curl -fkSL -o vstsagent.tar.gz https://vstsagentpackage.azureedge.net/agent/2.179.0/vsts-agent-linux-x64-2.179.0.tar.gz;tar -zxvf vstsagent.tar.gz; if [ -x "$(command -v systemctl)" ]; then ./config.sh --environment --environmentname "TEST-VM" --acceptteeeula --agent $HOSTNAME --url https://dev.azure.com/dibakarroy24/ --work _work --projectname 'ensuring-quality-releases' --auth PAT --token mabdaawlcw5rkedaxm4lajijgnf4alsivtxrfvmwlu47zkpld7ma --runasservice; sudo ./svc.sh install; sudo ./svc.sh start; else ./config.sh --environment --environmentname "TEST-VM" --acceptteeeula --agent $HOSTNAME --url https://dev.azure.com/dibakarroy24/ --work _work --projectname 'ensuring-quality-releases' --auth PAT --token mabdaawlcw5rkedaxm4lajijgnf4alsivtxrfvmwlu47zkpld7ma; ./run.sh; fi
               sudo adduser vmadmin sudo
 
 - stage: Build
