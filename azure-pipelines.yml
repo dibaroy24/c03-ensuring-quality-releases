@@ -169,7 +169,7 @@ stages:
     environment:
       name: 'TEST-VM'
       resourceType: VirtualMachine
-      tags: 'UITesting'
+      # tags: 'UITesting'
     strategy:
       runOnce:
         deploy:
