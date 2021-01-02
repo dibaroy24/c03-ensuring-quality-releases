@@ -106,9 +106,8 @@ stages:
             scriptLocation: 'inlineScript'
             inlineScript: |
               $linuxvmpublicip=az vm show --resource-group myudacityensureqltyrelc03-rg --name udacityensureqltyrel-VM -d --query [publicIps] -o tsv
-              ssh -i /home/vsts/work/_temp/id_rsa vmadmin@$linuxvmpublicip
-              sudo ./bin/installdependencies.sh
-              sudo adduser vmadmin sudo
+              ssh vmadmin@$linuxvmpublicip
+              ./bin/installdependencies.sh
 
 - stage: Build
   displayName: Build
