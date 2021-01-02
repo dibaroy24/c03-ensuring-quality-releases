@@ -5,7 +5,7 @@ name: Azure Pipelines
 
 variables:
   python.version: '3.7.6'
-  terraform.version: '0.12.3'
+  terraform.version: '0.14.3'
 
 stages:
 - stage: Provisioning
@@ -61,7 +61,7 @@ stages:
         - task: TerraformInstaller@0
           displayName: Install Terraform
           inputs:
-            terraformVersion: '0.12.3'
+            terraformVersion: '0.14.3'
         - task: TerraformTaskV1@0
           displayName: Terraform Init
           inputs:
@@ -98,13 +98,22 @@ stages:
         #       Install-Module AzureRm
         #       $linuxvmpublicip=Get-AzureRmVM -ResourceGroupName 'myudacityensureqltyrelc03-rg' -Name 'udacityensureqltyrel-VM' | Get-AzureRmPublicIpAddress
         #     azurePowerShellVersion: 'LatestVersion'
-        - task: AzureCLI@2
+        # - task: AzureCLI@2
+        #   displayName: Configure the VM for deployment
+        #   inputs:
+        #     azureSubscription: '$(azuresubscription)'
+        #     scriptType: 'bash'
+        #     scriptLocation: 'inlineScript'
+        #     inlineScript: |
+        #       $linuxvmpublicip=az vm show --resource-group myudacityensureqltyrelc03-rg --name udacityensureqltyrel-VM -d --query [publicIps] -o tsv
+        #       ssh vmadmin@$linuxvmpublicip
+        #       ./bin/installdependencies.sh
+        - task: Bash@3
           displayName: Configure the VM for deployment
           inputs:
-            azureSubscription: '$(azuresubscription)'
-            scriptType: 'bash'
-            scriptLocation: 'inlineScript'
-            inlineScript: |
+            targetType: 'inline'
+            script: |
+              curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
               $linuxvmpublicip=az vm show --resource-group myudacityensureqltyrelc03-rg --name udacityensureqltyrel-VM -d --query [publicIps] -o tsv
               ssh vmadmin@$linuxvmpublicip
               ./bin/installdependencies.sh
