@@ -30,7 +30,13 @@ stages:
     - job: ProvisioningAppService
       displayName: Provisioning AppService
       steps:
+        - task: InstallSSHKey@0
+          inputs:
+            knownHostsEntry: 'default'
+            sshPublicKey: '$(ssh_pub_key)'
+            sshKeySecureFile: 'id_rsa'
         - task: AzureCLI@2
+          displayName: Azure CLI to deploy required Azure resources
           inputs:
             azureSubscription: 'eqr-service-connection'
             scriptType: 'bash'
@@ -79,6 +85,7 @@ stages:
             backendAzureRmContainerName: 'terraform'
             backendAzureRmKey: 'terraform.tfstate'
         - task: TerraformTaskV1@0
+          displayName: Terraform Plan
           inputs:
             provider: 'azurerm'
             command: 'plan'
