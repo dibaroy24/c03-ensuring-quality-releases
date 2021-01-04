@@ -31,9 +31,8 @@ stages:
       displayName: Provisioning AppService
       steps:
         - task: AzureCLI@2
-          displayName: Azure CLI to deploy required Azure resources
           inputs:
-            azureSubscription: '$(azuresubscription)'
+            azureSubscription: 'eqr-service-connection'
             scriptType: 'bash'
             scriptLocation: 'inlineScript'
             inlineScript: |
@@ -44,7 +43,7 @@ stages:
         - task: AzurePowerShell@5
           displayName: Azure PowerShell script to get the storage key
           inputs:
-            azureSubscription: '$(azuresubscription)'
+            azureSubscription: 'eqr-service-connection'
             ScriptType: 'InlineScript'
             Inline: |
               # Using this script we will fetch storage key which is required in terraform file to authenticate backend storage account
@@ -74,18 +73,17 @@ stages:
             provider: 'azurerm'
             command: 'init'
             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-            backendServiceArm: '$(azuresubscription)'
+            backendServiceArm: 'eqr-service-connection'
             backendAzureRmResourceGroupName: '$(terraformstoragerg)'
             backendAzureRmStorageAccountName: '$(terraformstorageaccount)'
             backendAzureRmContainerName: 'terraform'
             backendAzureRmKey: 'terraform.tfstate'
         - task: TerraformTaskV1@0
-          displayName: Terraform Plan
           inputs:
             provider: 'azurerm'
             command: 'plan'
             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-            environmentServiceNameAzureRM: '$(azuresubscription)'
+            environmentServiceNameAzureRM: 'eqr-service-connection'
         - task: TerraformTaskV1@0
           displayName: Terraform Validate & Apply
           inputs:
@@ -93,4 +91,4 @@ stages:
             command: 'apply'
             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
             commandOptions: '-auto-approve'
-            environmentServiceNameAzureRM: '$(azuresubscription)'
+            environmentServiceNameAzureRM: 'eqr-service-connection'
