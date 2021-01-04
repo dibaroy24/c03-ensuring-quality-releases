@@ -6,7 +6,7 @@ variables:
   terraform.version: '0.14.3'
 
 stages:
-- stage: Terraform-CI
+- stage: Terraform_CI
   displayName: Copy Artifacts from GitHub
   jobs:
     - job: PublishGitHubArtifacts
@@ -24,7 +24,7 @@ stages:
             PathtoPublish: '$(Build.ArtifactStagingDirectory)'
             ArtifactName: 'drop'
             publishLocation: 'Container'
-- stage: Terraform-CD
+- stage: Terraform_CD
   displayName: Infra Provisioning
   jobs:
     - job: ProvisioningAppService
