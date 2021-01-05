@@ -100,7 +100,7 @@ stages:
             displayName: 'Download Selenium'
             artifact: selenium
           - task: Bash@3
-            displayName: UI Tests
+            displayName: UI Tests Logs
             inputs:
               targetType: 'inline'
               script: |
@@ -115,8 +115,9 @@ stages:
   - deployment: VMRunUITests
     displayName: Run UI Tests
     environment:
-      name:  'VM-TEST'
+      name:  'TEST-VM'
       resourceType: VirtualMachine
+      tags: 'CI-Testing'
     strategy:
       runOnce:
         deploy:
