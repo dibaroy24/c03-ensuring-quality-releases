@@ -20,7 +20,7 @@ stages:
     - task: ArchiveFiles@2
       displayName: 'Archive FakeRestAPI'
       inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/fakerestapi'
+        rootFolderOrFile: './fakerestapi'
         includeRootFolder: false
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
@@ -30,12 +30,13 @@ stages:
     - task: ArchiveFiles@2
       displayName: 'Archive files'
       inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
+        rootFolderOrFile: './automatedtesting/selenium'
         includeRootFolder: false
         archiveType: zip
         archiveFile: $(Build.ArtifactStagingDirectory)/selenium-tests.zip
         replaceExistingArchive: true
-    - upload: $(Build.ArtifactStagingDirectory)/selenium-tests.zip
+    - publish: $(Build.ArtifactStagingDirectory)/selenium-tests.zip
+      displayName: 'Publish Pipeline Artifacts'
       artifact: selenium
 
 - stage: WebAppDeployment
@@ -164,6 +165,7 @@ stages:
         workingDirectory: '$(System.DefaultWorkingDirectory)'
       continueOnError: true
     - task: CmdLine@2
+      displayName: 'List all files and folders'
       inputs:
         script: 'ls'
         workingDirectory: '$(System.DefaultWorkingDirectory)'
@@ -194,6 +196,7 @@ stages:
         targetType: 'inline'
         script: 'jmeter -n -t automatedtesting/jmeter/StressTestSuite.jmx -Jresdir=automatedtesting/jmeter/stresspages.csv -l automatedtesting/jmeter/report/stressresults.jtl -e -o automatedtesting/jmeter/stressreport'
     - task: PublishBuildArtifacts@1
+      displayName: 'Publish Build Artifacts'
       inputs:
         PathtoPublish: 'automatedtesting/jmeter'
         ArtifactName: 'jmeter'
