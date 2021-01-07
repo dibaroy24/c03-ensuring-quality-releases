@@ -59,7 +59,8 @@ with webdriver.Chrome(options=chrome_options) as driver:
 
     # Get URL
     driver.get(URL)
-    log(f"At home page - {URL}")
+    # log(f"At home page - {URL}")
+    log("At home page - {URL}")
 
     login("standard_user", "secret_sauce", driver)
 
