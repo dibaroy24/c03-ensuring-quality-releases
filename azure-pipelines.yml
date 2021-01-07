@@ -117,14 +117,14 @@ stages:
                 then
                   echo 'Jmeter already installed'
                 else
-                  echo "Changing directory to /home/udacity ..."
-                  cd /home/udacity  
+                  echo "Changing directory to /home/vmadmin ..."
+                  cd /home/vmadmin  
                   echo "Downloading Jmeter ..."
                   wget https://downloads.apache.org//jmeter/binaries/apache-jmeter-5.3.tgz
                   echo "Unpacking jmeter tgz ..."
                   tar -xzvf apache-jmeter-5.3.tgz
                   echo "Create symlink to jmeter bin file"
-                  sudo ln -s /home/udacity/apache-jmeter-5.3/bin/jmeter /usr/bin/jmeter
+                  sudo ln -s /home/vmadmin/apache-jmeter-5.3/bin/jmeter /usr/bin/jmeter
                   echo "Removing jmeter tgz ..."
                   sudo rm -rf apache-jmeter-5.3.tgz
                 fi
@@ -134,8 +134,8 @@ stages:
                 then
                   echo 'Chromedriver is already installed'
                 else
-                  echo "Changing directory to /home/udacity ..."
-                  cd /home/udacity        
+                  echo "Changing directory to /home/vmadmin ..."
+                  cd /home/vmadmin        
                   wget https://chromedriver.storage.googleapis.com/87.0.4280.66/chromedriver_linux64.zip
                   unzip chromedriver_linux64.zip
                   sudo mv chromedriver -t /usr/bin
