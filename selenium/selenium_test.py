@@ -29,7 +29,8 @@ def write_log():
 
 
 def login(username, password, driver):
-    log(f"Loggin {username} with password {password}")
+    # log(f"Loggin {username} with password {password}")
+    log("Loggin {username} with password {password}")
 
     username_field = driver.find_element(By.ID, "user-name")
     password_field = driver.find_element(By.ID, "password")
@@ -40,12 +41,14 @@ def login(username, password, driver):
 
 
 def add_to_cart(item_title, button):
-    log(f"Adding {item_title} to the cart")
+    # log(f"Adding {item_title} to the cart")
+    log("Adding {item_title} to the cart")
     button.click()
 
 
 def remove_from_cart(item_title, button):
-    log(f"Removing {item_title} from cart the cart")
+    # log(f"Removing {item_title} from cart the cart")
+    log("Removing {item_title} from cart the cart")
     button.click()
 
 

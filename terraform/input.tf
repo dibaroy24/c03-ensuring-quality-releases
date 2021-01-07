@@ -1,4 +1,4 @@
-# Resource Group/Location
+git# Resource Group/Location
 variable "location" {}
 variable "resource_group" {}
 variable "application_type" {}
