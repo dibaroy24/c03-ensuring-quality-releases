@@ -110,7 +110,6 @@ stages:
                 sudo apt install python3-pip -y
                 sudo apt install unzip -y
                 sudo apt install -y chromium-browser
-                pip3 install webdriver-manager
                 pip3 install selenium
                 
                 # ------------- Install Jmeter -------------
@@ -137,7 +136,7 @@ stages:
                 else
                   echo "Changing directory to /home/udacity ..."
                   cd /home/udacity        
-                  wget https://chromedriver.storage.googleapis.com/85.0.4183.87/chromedriver_linux64.zip
+                  wget https://chromedriver.storage.googleapis.com/88.0.4324.27/chromedriver_linux64.zip
                   unzip chromedriver_linux64.zip
                   sudo mv chromedriver -t /usr/bin
                   echo "Removing chromedriver_linux64.zip ..."
