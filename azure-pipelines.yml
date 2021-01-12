@@ -112,36 +112,21 @@ stages:
                 sudo apt install -y chromium-browser
                 pip3 install selenium
                 
-                # ------------- Install Jmeter -------------
-                if test -f "/usr/bin/jmeter"
-                then
-                  echo 'Jmeter already installed'
-                else
-                  echo "Changing directory to /home/vmadmin ..."
-                  cd /home/vmadmin  
-                  echo "Downloading Jmeter ..."
-                  wget https://downloads.apache.org//jmeter/binaries/apache-jmeter-5.3.tgz
-                  echo "Unpacking jmeter tgz ..."
-                  tar -xzvf apache-jmeter-5.3.tgz
-                  echo "Create symlink to jmeter bin file"
-                  sudo ln -s /home/vmadmin/apache-jmeter-5.3/bin/jmeter /usr/bin/jmeter
-                  echo "Removing jmeter tgz ..."
-                  sudo rm -rf apache-jmeter-5.3.tgz
-                fi
-                
                 # ------------- Install Chromedriver -------------
-                if test -f "usr/bin/chromedriver"
-                then
-                  echo 'Chromedriver is already installed'
+                FILE=chromedriver_linux64.zip
+                if [ -f "$FILE" ]; then
+                  echo "$FILE exists."
                 else
-                  echo "Changing directory to /home/vmadmin ..."
-                  cd /home/vmadmin        
                   wget https://chromedriver.storage.googleapis.com/87.0.4280.66/chromedriver_linux64.zip
-                  unzip chromedriver_linux64.zip
-                  sudo mv chromedriver -t /usr/bin
-                  echo "Removing chromedriver_linux64.zip ..."
-                  rm -rf chromedriver_linux64.zip
                 fi
+
+                unzip chromedriver_linux64.zip
+                sudo mv chromedriver /usr/bin/chromedriver
+                sudo chown root:root /usr/bin/chromedriver
+                sudo chmod +x /usr/bin/chromedriver
+                chromium-browser -version
+                chromedriver --version
+
                 
                 if test -f "usr/bin/java"
                 then
@@ -150,6 +135,14 @@ stages:
                   echo "Install default JRE ..."
                   sudo apt install default-jre -y
                 fi
+
+                # ------------- Agent Log Analytics -------------------
+                wget https://raw.githubusercontent.com/Microsoft/OMS-Agent-for-Linux/master/installer/scripts/onboard_agent.sh && sh onboard_agent.sh -w dbf2bd83-6d47-436b-a499-a2b566def8fe -s MuSR8Ti5MMi0E+9+1NM4NxCxFqJcfLzuGD0EtGhjXo3Vhy/THcSdCf1WyQnkXafD+6DiFjiOAEfJiQh6EbZVeg== -d opinsights.azure.com
+
+          - task: JMeterInstaller@0
+            displayName: 'Install JMeter'
+            inputs:
+              jmeterVersion: '5.2.1'
           
           - task: ExtractFiles@1
             inputs:
