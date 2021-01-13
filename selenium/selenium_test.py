@@ -3,17 +3,22 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.expected_conditions import presence_of_element_located
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.options import Options as ChromeOptions
 from datetime import datetime
 
 # Ititialize settings
-URL = "https://www.saucedemo.com/"
-SEARCH_TERM = "T SHIRT"
+login_url = 'https://www.saucedemo.com/'
+inventory_url = 'https://www.saucedemo.com/inventory.html'
+cart_url = 'https://www.saucedemo.com/cart.html'
 LOG_FILE = "/var/logs/selenium/selenium_log.txt"
 log_arr = []
-chrome_options = Options()
-chrome_options.add_argument("--headless")
 
+
+def create_driver():
+    log('Starting the browser...')
+    options = ChromeOptions()
+    options.add_argument("--headless") 
+    return webdriver.Chrome(options=options)
 
 def log(text):
     time = datetime.now().strftime("%Y-%m-%dT%H:%M:%SK")
@@ -28,78 +33,68 @@ def write_log():
             txt_file.write("".join(line) + "\n")
 
 
-def login(username, password, driver):
-    # log(f"Loggin {username} with password {password}")
-    log("Loggin {username} with password {password}")
-
-    username_field = driver.find_element(By.ID, "user-name")
-    password_field = driver.find_element(By.ID, "password")
-
-    # Enter password
-    username_field.send_keys(username)
-    password_field.send_keys(password + Keys.RETURN)
-
-
-def add_to_cart(item_title, button):
-    # log(f"Adding {item_title} to the cart")
-    log("Adding {item_title} to the cart")
-    button.click()
+def login(driver, user, password):
+    log('Test: login. Navigating to the demo page to login {}'.format(login_url))
+    driver.get(login_url)
+    log('Login attempt, user: {},  password: {}'.format(user, password))
+    driver.find_element_by_id('user-name').send_keys(user)
+    driver.find_element_by_id('password').send_keys(password)
+    driver.find_element_by_id('login-button').click()
+    assert inventory_url in driver.current_url
+    log('Login Successful.')
 
 
-def remove_from_cart(item_title, button):
-    # log(f"Removing {item_title} from cart the cart")
-    log("Removing {item_title} from cart the cart")
-    button.click()
+def add_to_cart(driver):
+    items_in_cart = []
+    log('Test: adding items to cart')
+    elements = driver.find_elements_by_class_name('inventory_item')
+    for item in elements:
+        item_name = item.find_element_by_class_name('inventory_item_name').text
+        items_in_cart.append(item_name)
+        item.find_element_by_class_name('btn_inventory').click()
+        print('Added {} to cart'.format(item_name))
+    cart_element = driver.find_element_by_class_name('shopping_cart_badge')
+    assert int(cart_element.text) == len(elements)
+    #print ('Navigate to cart and assert items in cart.')
+    driver.find_element_by_class_name('shopping_cart_link').click()
+    assert cart_url in driver.current_url
+    for item in driver.find_elements_by_class_name('inventory_item_name'):
+        assert item.text in items_in_cart
+    log('Successfully Added Items in cart.')
 
 
-# This example requires Selenium WebDriver 3.13 or newer
-with webdriver.Chrome(options=chrome_options) as driver:
-    # Set maximum time to wait for element to load
-    wait = WebDriverWait(driver, 10)
+def remove_from_cart(driver):
+    log('Test: removing items from cart')
+    #print ('Navigate to cart and assert items in cart.')
+    driver.find_element_by_class_name('shopping_cart_link').click()
+    assert cart_url in driver.current_url
 
-    # Get URL
-    driver.get(URL)
-    # log(f"At home page - {URL}")
-    log("At home page - {URL}")
+    log("Items in Cart: {}".format(len(driver.find_elements_by_class_name('cart_item'))))
+    
+    #print('Remove all items from cart.')
+    for item in driver.find_elements_by_class_name('cart_item'):
+        item_name = item.find_element_by_class_name('inventory_item_name').text
+        item.find_element_by_class_name('cart_button').click()
+        print('Removed {} from cart'.format(item_name))
 
-    login("standard_user", "secret_sauce", driver)
+    assert len(driver.find_elements_by_class_name('cart_item')) == 0
+    #print('Cart empty.')
+    log('Successfully Removed Items from the cart.')
 
-    log("User successfully logged in")
+def run_ui_tests():
+    driver = create_driver()
+    #print("Browser started successfully.")
+    log("UI Tests started")
+    
+    login(driver, 'standard_user', 'secret_sauce')
 
-    # Find all inventory items
-    inventory_items = driver.find_elements(By.CLASS_NAME, "inventory_item")
+    add_to_cart(driver)
 
-    log("Adding all items to the cart ...")
+    remove_from_cart(driver)
 
-    # Add all items to the cart
-    for item in inventory_items:
-        title = item.find_element(By.CLASS_NAME, "inventory_item_name").text
-        button = item.find_element(
-            By.CSS_SELECTOR, "button[class='btn_primary btn_inventory']"
-        )
-        add_to_cart(title, button)
-
-    # Navigate to cart
-    log("Navigating to cart page")
-    cart_button = driver.find_element(
-        By.CSS_SELECTOR, "a[class='shopping_cart_link fa-layers fa-fw']"
-    )
-    cart_button.click()
-    log("Now on cart page")
-
-    # Remove all items from cart
-    log("Removing all items from the cart")
-
-    # Find cart items
-    cart_items = driver.find_elements(By.CLASS_NAME, "cart_item")
-
-    for item in cart_items:
-        title = item.find_element(By.CLASS_NAME, "inventory_item_name").text
-        button = item.find_element(
-            By.CSS_SELECTOR, "button[class='btn_secondary cart_button']"
-        )
-        remove_from_cart(title, button)
-
-    log("Successfully logged in, added all items to cart and removed all items.")
+    log("UI Tests completed.")
+    driver.quit()
     write_log()
 
+if __name__ == "__main__":
+    run_ui_tests()
