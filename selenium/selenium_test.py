@@ -14,11 +14,11 @@ LOG_FILE = "/var/logs/selenium/selenium_log.txt"
 log_arr = []
 
 
-def create_driver():
-    log('Starting the browser...')
-    options = ChromeOptions()
-    options.add_argument("--headless") 
-    return webdriver.Chrome(options=options)
+# def create_driver():
+#     log('Starting the browser...')
+#     options = ChromeOptions()
+#     options.add_argument("--headless") 
+#     return webdriver.Chrome(options=options)
 
 def log(text):
     time = datetime.now().strftime("%Y-%m-%dT%H:%M:%SK")
@@ -33,7 +33,13 @@ def write_log():
             txt_file.write("".join(line) + "\n")
 
 
-def login(driver, user, password):
+# def login(driver, user, password):
+def login(user, password):
+    log('Starting the browser...')
+    # --uncomment when running in Azure DevOps.
+    options = ChromeOptions()
+    options.add_argument("--headless") 
+    driver = webdriver.Chrome(options=options)
     log('Test: login. Navigating to the demo page to login {}'.format(login_url))
     driver.get(login_url)
     log('Login attempt, user: {},  password: {}'.format(user, password))
@@ -44,7 +50,13 @@ def login(driver, user, password):
     log('Login Successful.')
 
 
-def add_to_cart(driver):
+# def add_to_cart(driver):
+def add_to_cart():
+    # print ('Starting the browser...')
+    # --uncomment when running in Azure DevOps.
+    options = ChromeOptions()
+    options.add_argument("--headless") 
+    driver = webdriver.Chrome(options=options)
     items_in_cart = []
     log('Test: adding items to cart')
     elements = driver.find_elements_by_class_name('inventory_item')
@@ -63,7 +75,13 @@ def add_to_cart(driver):
     log('Successfully Added Items in cart.')
 
 
-def remove_from_cart(driver):
+# def remove_from_cart(driver):
+def remove_from_cart():
+    # print ('Starting the browser...')
+    # --uncomment when running in Azure DevOps.
+    options = ChromeOptions()
+    options.add_argument("--headless") 
+    driver = webdriver.Chrome(options=options)
     log('Test: removing items from cart')
     #print ('Navigate to cart and assert items in cart.')
     driver.find_element_by_class_name('shopping_cart_link').click()
@@ -82,15 +100,23 @@ def remove_from_cart(driver):
     log('Successfully Removed Items from the cart.')
 
 def run_ui_tests():
-    driver = create_driver()
+    # driver = create_driver()
     #print("Browser started successfully.")
+
+    options = ChromeOptions()
+    options.add_argument("--headless") 
+    driver = webdriver.Chrome(options=options)
+
     log("UI Tests started")
     
-    login(driver, 'standard_user', 'secret_sauce')
+    # login(driver, 'standard_user', 'secret_sauce')
+    login('standard_user', 'secret_sauce')
 
-    add_to_cart(driver)
+    # add_to_cart(driver)
+    add_to_cart()
 
-    remove_from_cart(driver)
+    # remove_from_cart(driver)
+    remove_from_cart()
 
     log("UI Tests completed.")
     driver.quit()
