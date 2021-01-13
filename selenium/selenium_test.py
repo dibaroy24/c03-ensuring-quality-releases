@@ -103,9 +103,9 @@ def run_ui_tests():
     # driver = create_driver()
     #print("Browser started successfully.")
 
-    options = ChromeOptions()
-    options.add_argument("--headless") 
-    driver = webdriver.Chrome(options=options)
+    # options = ChromeOptions()
+    # options.add_argument("--headless") 
+    # driver = webdriver.Chrome(options=options)
 
     log("UI Tests started")
     
