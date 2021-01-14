@@ -1,5 +1,5 @@
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
+# from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
@@ -39,8 +39,7 @@ def login(user, password):
     options = ChromeOptions()
     options.add_argument("--headless")
     options.add_argument('--no-sandbox')
-    # driver = webdriver.Chrome(options=options)
-    driver = webdriver.Chrome(ChromeDriverManager(version="87.0.4280.66", chrome_type=ChromeType.CHROMIUM).install())
+    driver = webdriver.Chrome(options=options)
     log('Test: login. Navigating to the demo page to login {}'.format(login_url))
     driver.get(login_url)
     log('Login attempt, user: {},  password: {}'.format(user, password))
