@@ -8,8 +8,6 @@ from datetime import datetime
 
 # Ititialize settings
 login_url = 'https://www.saucedemo.com/'
-inventory_url = 'https://www.saucedemo.com/inventory.html'
-cart_url = 'https://www.saucedemo.com/cart.html'
 LOG_FILE = "/var/logs/selenium/selenium_log.txt"
 log_arr = []
 
@@ -38,7 +36,8 @@ def login(user, password):
     log('Starting the browser...')
     # --uncomment when running in Azure DevOps.
     options = ChromeOptions()
-    options.add_argument("--headless") 
+    options.add_argument("--headless")
+    options.add_argument('--no-sandbox')
     driver = webdriver.Chrome(options=options)
     log('Test: login. Navigating to the demo page to login {}'.format(login_url))
     driver.get(login_url)
@@ -48,79 +47,8 @@ def login(user, password):
     driver.find_element_by_id('login-button').click()
     assert inventory_url in driver.current_url
     log('Login Successful.')
-
-
-# def add_to_cart(driver):
-def add_to_cart():
-    # print ('Starting the browser...')
-    # --uncomment when running in Azure DevOps.
-    options = ChromeOptions()
-    options.add_argument("--headless") 
-    driver = webdriver.Chrome(options=options)
-    items_in_cart = []
-    log('Test: adding items to cart')
-    elements = driver.find_elements_by_class_name('inventory_item')
-    for item in elements:
-        item_name = item.find_element_by_class_name('inventory_item_name').text
-        items_in_cart.append(item_name)
-        item.find_element_by_class_name('btn_inventory').click()
-        print('Added {} to cart'.format(item_name))
-    cart_element = driver.find_element_by_class_name('shopping_cart_badge')
-    assert int(cart_element.text) == len(elements)
-    #print ('Navigate to cart and assert items in cart.')
-    driver.find_element_by_class_name('shopping_cart_link').click()
-    assert cart_url in driver.current_url
-    for item in driver.find_elements_by_class_name('inventory_item_name'):
-        assert item.text in items_in_cart
-    log('Successfully Added Items in cart.')
-
-
-# def remove_from_cart(driver):
-def remove_from_cart():
-    # print ('Starting the browser...')
-    # --uncomment when running in Azure DevOps.
-    options = ChromeOptions()
-    options.add_argument("--headless") 
-    driver = webdriver.Chrome(options=options)
-    log('Test: removing items from cart')
-    #print ('Navigate to cart and assert items in cart.')
-    driver.find_element_by_class_name('shopping_cart_link').click()
-    assert cart_url in driver.current_url
-
-    log("Items in Cart: {}".format(len(driver.find_elements_by_class_name('cart_item'))))
-    
-    #print('Remove all items from cart.')
-    for item in driver.find_elements_by_class_name('cart_item'):
-        item_name = item.find_element_by_class_name('inventory_item_name').text
-        item.find_element_by_class_name('cart_button').click()
-        print('Removed {} from cart'.format(item_name))
-
-    assert len(driver.find_elements_by_class_name('cart_item')) == 0
-    #print('Cart empty.')
-    log('Successfully Removed Items from the cart.')
-
-def run_ui_tests():
-    # driver = create_driver()
-    #print("Browser started successfully.")
-
-    # options = ChromeOptions()
-    # options.add_argument("--headless") 
-    # driver = webdriver.Chrome(options=options)
-
-    log("UI Tests started")
-    
-    # login(driver, 'standard_user', 'secret_sauce')
-    login('standard_user', 'secret_sauce')
-
-    # add_to_cart(driver)
-    add_to_cart()
-
-    # remove_from_cart(driver)
-    remove_from_cart()
-
-    log("UI Tests completed.")
-    driver.quit()
+    driver.close()
     write_log()
 
-if __name__ == "__main__":
-    run_ui_tests()
+# login(driver, 'standard_user', 'secret_sauce')
+login('standard_user', 'secret_sauce')
