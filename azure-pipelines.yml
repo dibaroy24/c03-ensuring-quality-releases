@@ -111,6 +111,7 @@ stages:
                 sudo apt install unzip -y
                 sudo apt install -y chromium-browser
                 pip3 install selenium
+                pip3 install webdriver-manager
 
                 # ------------- Install Jmeter -------------
                 if test -f "/usr/bin/jmeter"
@@ -128,37 +129,6 @@ stages:
                   echo "Removing jmeter tgz ..."
                   sudo rm -rf apache-jmeter-5.3.tgz
                 fi
-                
-                # ------------- Install Chromedriver -------------
-                if test -f "usr/bin/chromedriver"
-                then
-                  echo 'Chromedriver is already installed'
-                # else
-                  sudo chmod 755 /usr/bin/chromedriver
-                  sudo rm -f /usr/bin/chromedriver
-                  sudo rm -f /usr/local/bin/chromedriver
-                  sudo rm -f /usr/local/share/chromedriver
-                  echo "Changing directory to /home/vmadmin ..."
-                  cd /home/vmadmin
-                  wget https://chromedriver.storage.googleapis.com/87.0.4280.66/chromedriver_linux64.zip
-                  unzip chromedriver_linux64.zip
-                  sudo mv chromedriver -t /usr/bin
-                  sudo chmod +x /usr/bin/chromedriver
-                  echo "Removing chromedriver_linux64.zip ..."
-                  rm -rf chromedriver_linux64.zip
-                  # sudo mv chromedriver /usr/bin/chromedriver
-                  # sudo chown root:root /usr/bin/chromedriver
-                  # sudo chmod +x /usr/bin/chromedriver
-                  chromium-browser -version
-                  chromedriver --version
-                fi
-
-                # unzip chromedriver_linux64.zip
-                # sudo mv chromedriver /usr/bin/chromedriver
-                # sudo chown root:root /usr/bin/chromedriver
-                # sudo chmod +x /usr/bin/chromedriver
-                # chromium-browser -version
-                # chromedriver --version
 
                 
                 if test -f "usr/bin/java"
