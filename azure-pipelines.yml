@@ -116,33 +116,30 @@ stages:
                 echo "Selenium Installed"
                 # pip3 install webdriver-manager
 
+
                 # ------------- Install Chromedriver -------------
-                if test -f "usr/bin/chromedriver"
-                then
-                  echo 'Chromedriver is already installed'
-                  # else
-                  sudo chmod 755 /usr/bin/chromedriver
-                  sudo rm -f /usr/bin/chromedriver
-                  # sudo rm -f /usr/local/bin/chromedriver
-                  # sudo rm -f /usr/local/share/chromedriver
-                  # echo "Changing directory to /home/vmadmin ..."
-                  # cd /home/vmadmin
-                  wget https://chromedriver.storage.googleapis.com/index.html?path=87.0.4280.88/chromedriver_linux64.zip
-                  unzip chromedriver_linux64.zip
-                  sudo mv chromedriver /usr/bin
-                  echo "Go to directory /usr/bin ..."
-                  cd /usr/bin
-                  sudo chmod a+x /usr/bin/chromedriver
-                  echo "Changing directory to /home/vmadmin ..."
-                  cd /home/vmadmin
-                  echo "Removing chromedriver_linux64.zip ..."
-                  rm -rf chromedriver_linux64.zip
-                  # sudo mv chromedriver /usr/bin/chromedriver
-                  # sudo chown root:root /usr/bin/chromedriver
-                  # sudo chmod +x /usr/bin/chromedriver
-                  chromium-browser -version
-                  chromedriver --version
-                fi
+                sudo chmod 755 /usr/bin/chromedriver
+                sudo rm -f /usr/bin/chromedriver
+                # sudo rm -f /usr/local/bin/chromedriver
+                # sudo rm -f /usr/local/share/chromedriver
+                # echo "Changing directory to /home/vmadmin ..."
+                # cd /home/vmadmin
+                wget https://chromedriver.storage.googleapis.com/index.html?path=87.0.4280.88/chromedriver_linux64.zip
+                unzip chromedriver_linux64.zip
+                sudo mv chromedriver /usr/bin
+                echo "Go to directory /usr/bin ..."
+                cd /usr/bin
+                sudo chmod a+x /usr/bin/chromedriver
+                echo "Changing directory to /home/vmadmin ..."
+                cd /home/vmadmin
+                echo "Removing chromedriver_linux64.zip ..."
+                rm -rf chromedriver_linux64.zip
+                # sudo mv chromedriver /usr/bin/chromedriver
+                # sudo chown root:root /usr/bin/chromedriver
+                # sudo chmod +x /usr/bin/chromedriver
+                chromium-browser -version
+                chromedriver --version
+
 
                 # ------------- Install Jmeter -------------
                 if test -f "/usr/bin/jmeter"
