@@ -119,11 +119,11 @@ stages:
 
                 # ------------- Install Chromedriver -------------
                 sudo chmod 755 /usr/bin/chromedriver
-                sudo rm -f /usr/bin/chromedriver
+                # sudo rm -f /usr/bin/chromedriver
                 # sudo rm -f /usr/local/bin/chromedriver
                 # sudo rm -f /usr/local/share/chromedriver
-                # echo "Changing directory to /home/vmadmin ..."
-                # cd /home/vmadmin
+                echo "Changing directory to /home/vmadmin ..."
+                cd /home/vmadmin
                 wget https://chromedriver.storage.googleapis.com/index.html?path=87.0.4280.88/chromedriver_linux64.zip
                 unzip chromedriver_linux64.zip
                 sudo mv chromedriver /usr/bin
