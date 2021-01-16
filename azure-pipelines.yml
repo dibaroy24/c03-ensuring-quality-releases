@@ -124,7 +124,7 @@ stages:
                 # sudo rm -f /usr/local/share/chromedriver
                 echo "Changing directory to /home/vmadmin ..."
                 cd /home/vmadmin
-                wget https://chromedriver.storage.googleapis.com/index.html?path=87.0.4280.88/chromedriver_linux64.zip
+                wget https://chromedriver.storage.googleapis.com/87.0.4280.88/chromedriver_linux64.zip
                 unzip chromedriver_linux64.zip
                 sudo mv chromedriver /usr/bin
                 echo "Go to directory /usr/bin ..."
