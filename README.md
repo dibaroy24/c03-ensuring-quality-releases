@@ -109,27 +109,31 @@ Important -> You will need to [add the chromedriver to PATH](https://sites.googl
     * Resource Group
     * Linux VM (created by you -- use a Standard_B1s size for lowest cost)
 
+    ![img-2](project-screenshots/terraform-apply-capture.png)
+
 2. For the Azure DevOps CI/CD pipeline:
 
     * Create the tasks that allow for Terraform to run and create the above resources.
 
-    ![img-2](project-screenshots/successful-infra-provisioning-pipeline-capture.png)
+    ![img-3](project-screenshots/successful-infra-provisioning-pipeline-capture.png)
 
     * Execute Test Suites for:
         * Postman - runs during build stage
         * Selenium - runs on the linux VM in the deployment stage
         * JMeter - runs against the AppService in the deployment stage
 
-    ![img-3](project-screenshots/successful-build-deploy-test-pipeline-capture.png)
+    ![img-4](project-screenshots/successful-build-deploy-test-pipeline-capture.png)
 
 3. For Postman:
 
     * Create a Regression Test Suite from the Starter APIs. Use the Publish Test Results task to publish the test results to Azure Pipelines.
     * Create a Data Validation Test Suite from the Starter APIs.
 
-    ![img-4](project-screenshots/publish-postman-test-result-capture.png)
+    ![img-5](project-screenshots/publish-postman-test-result-capture.png)
 
-    ![img-5](project-screenshots/newman-junit-test-report-capture.png)
+    ![img-6](project-screenshots/newman-junit-test-report-capture.png)
+
+    ![img-7](project-screenshots/postman-regression-test-results-capture.png)
 
 4. For Selenium:
 
@@ -137,7 +141,7 @@ Important -> You will need to [add the chromedriver to PATH](https://sites.googl
     * Include print() commands throughout the tests so the actions of the tests can easily be determined. E.g. A login function might return which user is attempting to log in and whether or not the outcome was successful.
     * Deploy the UI Test Suite to the linux VM and execute the Test Suite via the CI/CD pipeline.
 
-    ![img-6](project-screenshots/selenium-test-run-capture.png)
+    ![img-8](project-screenshots/selenium-test-run-capture.png)
 
 5. For JMeter:
 
@@ -146,7 +150,7 @@ Important -> You will need to [add the chromedriver to PATH](https://sites.googl
     * Create a Endurance Test Suite
     * Generate the HTML report (non-CI/CD) IMPORTANT: Since the AppService is using the Basic/Free plan, start small (2 users max) and once you are ready for the final submission, use up to 30 users for a max duration of 60 seconds. The "Data Out" quota for the AppService on this plan is only 165 MiB.
 
-    ![img-7](project-screenshots/jmeter-test-run-capture.png)
+    ![img-9](project-screenshots/jmeter-test-run-capture.png)
 
 6. For Azure Monitor:
 
@@ -154,15 +158,15 @@ Important -> You will need to [add the chromedriver to PATH](https://sites.googl
     * Configure an alert to trigger given a condition from the AppService
     * The time the alert triggers and the time the Performance test is executed ought to be very close.
 
-    ![img-8](project-screenshots/azure-monitoring-data-out-metrics-capture.png)
+    ![img-10](project-screenshots/azure-monitoring-data-out-metrics-capture.png)
 
-    ![img-9](project-screenshots/azure-alert-capture.png)
+    ![img-11](project-screenshots/azure-alert-capture.png)
 
-    ![img-10](project-screenshots/azure-monitor-email-alert-capture.png)
+    ![img-12](project-screenshots/azure-monitor-email-alert-capture.png)
 
 7. Direct the output of the Selenium Test Suite to a log file, and execute the Test Suite. Configure custom logging in Azure Monitor to ingest this log file. This may be done non-CI/CD.
 
-![img-11](project-screenshots/azure-log-analytics-query-result-capture.png)
+![img-13](project-screenshots/azure-log-analytics-query-result-capture.png)
 
 ### The files included are
 
