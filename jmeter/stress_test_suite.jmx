@@ -31,7 +31,7 @@
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
-          <stringProp name="HTTPSampler.domain">testautomation-appservice.azurewebsites.net</stringProp>
+          <stringProp name="HTTPSampler.domain">udacityensureqltyrel-was.azurewebsites.net</stringProp>
           <stringProp name="HTTPSampler.port"></stringProp>
           <stringProp name="HTTPSampler.protocol">https</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
@@ -130,7 +130,8 @@
               <connectTime>true</connectTime>
             </value>
           </objProp>
-          <stringProp name="filename">stress_test_results.csv</stringProp>
+          <stringProp name="filename">stress_test_results.jtl</stringProp>
+          <!-- <stringProp name="filename">stress_test_results.csv</stringProp> -->
         </ResultCollector>
         <hashTree/>
       </hashTree>

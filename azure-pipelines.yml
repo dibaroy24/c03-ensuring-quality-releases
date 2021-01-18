@@ -202,11 +202,9 @@ stages:
                 echo "Running stress test ..."
                 jmeter -n -t stress_test_suite.jmx -l stress_test_result.jtl -e -o stress_test_report/
                 # jmeter -n -t stress_test_suite.jmx -l stress_test_result.csv -e -o stress_test_html_report/
-                # echo "HTML report written to -----> jmeter/stress_test_html_report"
                   
                 # --------- Run endurance test --------------
                 echo "Running endurance test ..."
                 jmeter -n -t endurance_test_suite.jmx -l endurance_test_results.jtl -e -o endurance_test_report/
                 # jmeter -n -t endurance_test_suite.jmx -l endurance_test_results.csv -e -o endurance_test_html_report/
-                # echo "HTML report written to -----> jmeter/endurance_test_html_report"
 
