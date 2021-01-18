@@ -1,0 +1,22 @@
+2021-01-18T05:06:48K Starting the browser...
+2021-01-18T05:06:52K Test: Login. Navigating to the demo page to login https://www.saucedemo.com/
+2021-01-18T05:06:54K Login attempt, user: standard_user,  password: secret_sauce
+2021-01-18T05:06:54K Login Successful.
+2021-01-18T05:06:54K Test: Adding items to cart
+2021-01-18T05:06:54K Added Sauce Labs Backpack to cart
+2021-01-18T05:06:54K Added Sauce Labs Bike Light to cart
+2021-01-18T05:06:54K Added Sauce Labs Bolt T-Shirt to cart
+2021-01-18T05:06:54K Added Sauce Labs Fleece Jacket to cart
+2021-01-18T05:06:54K Added Sauce Labs Onesie to cart
+2021-01-18T05:06:55K Added Test.allTheThings() T-Shirt (Red) to cart
+2021-01-18T05:06:55K Successfully Added Items in cart.
+2021-01-18T05:06:55K Test: Removing items from cart
+2021-01-18T05:06:55K Items in Cart: 6
+2021-01-18T05:06:55K Removed Sauce Labs Backpack from cart
+2021-01-18T05:06:55K Removed Sauce Labs Bike Light from cart
+2021-01-18T05:06:55K Removed Sauce Labs Bolt T-Shirt from cart
+2021-01-18T05:06:55K Removed Sauce Labs Fleece Jacket from cart
+2021-01-18T05:06:55K Removed Sauce Labs Onesie from cart
+2021-01-18T05:06:55K Removed Test.allTheThings() T-Shirt (Red) from cart
+2021-01-18T05:06:55K Successfully Removed Items from the cart.
+
