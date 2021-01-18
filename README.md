@@ -34,6 +34,7 @@ Install, set up and configure the following dependencies and apply them all toge
 * client_id
 * client_secret
 * tenant_id
+
 However, I have used the [Pipeline Variables](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch) here for the same.
 
 ### Azure DevOps
