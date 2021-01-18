@@ -24,41 +24,41 @@ Install, set up and configure the following dependencies and apply them all toge
 
 ### Terraform in Azure
 
-([Configure the storage account and state backend](https://docs.microsoft.com/en-us/azure/developer/terraform/store-state-in-azure-storage)). Replace the values below in terraform/environments/test/main.tf with the output from the Azure CLI:
+[Configure the storage account and state backend](https://docs.microsoft.com/en-us/azure/developer/terraform/store-state-in-azure-storage). Replace the values below in terraform/environments/test/main.tf with the output from the Azure CLI:
 * storage_account_name
 * container_name
 * access_key
 
-([Create a Service Principal for Terraform](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/guides/service_principal_client_secret)). Replace the below values in terraform/environments/test/terraform.tfvars with the output from the Azure CLI:
+[Create a Service Principal for Terraform](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/guides/service_principal_client_secret). Replace the below values in terraform/environments/test/terraform.tfvars with the output from the Azure CLI:
 * subscription_id
 * client_id
 * client_secret
 * tenant_id
-However, I have used the ([Pipeline Variables](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch)) here for the same.
+However, I have used the [Pipeline Variables](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch) here for the same.
 
 ### Azure DevOps
 
-([Follow the instructions](https://docs.microsoft.com/en-us/azure/devops/pipelines/create-first-pipeline?view=azure-devops&tabs=java%2Ctfs-2018-2%2Cbrowser)) to create a new Azure Pipeline from the azure-pipelines.yaml file.
+[Follow the instructions](https://docs.microsoft.com/en-us/azure/devops/pipelines/create-first-pipeline?view=azure-devops&tabs=java%2Ctfs-2018-2%2Cbrowser) to create a new Azure Pipeline from the azure-pipelines.yaml file.
 
 ### Selenium
 
-([Download the latest Chrome driver](https://sites.google.com/a/chromium.org/chromedriver/)).
+[Download the latest Chrome driver](https://sites.google.com/a/chromium.org/chromedriver/).
 
 ```
 pip install -U selenium
 sudo apt-get install -y chromium-browser
 ```
-Important -> You will need to ([add the chromedriver to PATH](https://sites.google.com/a/chromium.org/chromedriver/getting-started)).
+Important -> You will need to [add the chromedriver to PATH](https://sites.google.com/a/chromium.org/chromedriver/getting-started).
 
 ### JMeter
 
-1. ([Install JMeter](https://jmeter.apache.org/download_jmeter.cgi)). However, I have used the "JMeter Tool Installer" ([plugin](https://marketplace.visualstudio.com/items?itemName=AlexandreGattiker.jmeter-tasks)) from the Marketplace.
+1. [Install JMeter](https://jmeter.apache.org/download_jmeter.cgi). However, I have used the "JMeter Tool Installer" [plugin](https://marketplace.visualstudio.com/items?itemName=AlexandreGattiker.jmeter-tasks) from the Marketplace.
 
 2. Replace the APPSERVICEURL with the URL of your AppService once it's deployed.
 
 ### Postman
 
-([Install Postman](https://www.postman.com/downloads/)).
+[Install Postman](https://www.postman.com/downloads/).
 
 ### Dev Environment
 
@@ -66,7 +66,7 @@ Important -> You will need to ([add the chromedriver to PATH](https://sites.goog
 
 2. Complete the "Getting Started," and each of the "Installation" sections.
 
-3. ([Create an SSH key pair](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/mac-create-ssh-keys)) for the linux machine. Use the reference to the file for the Dev Environment. Use the actual public key itself when using Terraform in the CI/CD pipeline.
+3. [Create an SSH key pair](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/mac-create-ssh-keys) for the linux machine. Use the reference to the file for the Dev Environment. Use the actual public key itself when using Terraform in the CI/CD pipeline.
 
 4. Run the terraform commands to create the resources in Azure.
 ```
@@ -83,7 +83,7 @@ Important -> You will need to ([add the chromedriver to PATH](https://sites.goog
 6. Configure the Linux VM for deployment:
     * SSH into the VM using the Public IP.
     * Alternatively, you can use the 'Reset Password' function in Azure for the VM resource and then try SSH using those credentials.
-    * ([Follow the instructions to create an environment in Azure DevOps](https://docs.microsoft.com/en-us/azure/devops/pipelines/ecosystems/deploy-linux-vm?view=azure-devops&tabs=java)).
+    * [Follow the instructions to create an environment in Azure DevOps](https://docs.microsoft.com/en-us/azure/devops/pipelines/ecosystems/deploy-linux-vm?view=azure-devops&tabs=java).
     * If the registration script shows "sudo: ./svc.sh: command not found":
         ```
         sudo bin/installdependencies.sh
@@ -91,7 +91,7 @@ Important -> You will need to ([add the chromedriver to PATH](https://sites.goog
         sudo rm -rf azagent
         ```
     * Run the registration script again.
-    * ([Add your user to the sudoers file](https://askubuntu.com/questions/7477/how-can-i-add-a-new-user-as-sudoer-using-the-command-line)).
+    * [Add your user to the sudoers file](https://askubuntu.com/questions/7477/how-can-i-add-a-new-user-as-sudoer-using-the-command-line).
 
 7. Update azure-pipelines.yaml with the Environment, and run the pipeline. You can now deploy to the Linux VM.
 
@@ -175,7 +175,7 @@ Important -> You will need to ([add the chromedriver to PATH](https://sites.goog
 
 Please see below some of the references that might be helpful in carrying out this project.
 
-* ([Deploying Terraform Infrastructure using Azure DevOps Pipelines Step by Step](https://gmusumeci.medium.com/deploying-terraform-infrastructure-using-azure-devops-pipelines-step-by-step-advanced-1281b4ee15d1))
-* ([Azure DevOps: VM Deployment Environments](https://www.freshbrewed.science/azure-devops-vm-deployment-environments/index.html))
-* ([Collect custom logs with Log Analytics agent in Azure Monitor](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/data-sources-custom-logs))
+* [Deploying Terraform Infrastructure using Azure DevOps Pipelines Step by Step](https://gmusumeci.medium.com/deploying-terraform-infrastructure-using-azure-devops-pipelines-step-by-step-advanced-1281b4ee15d1)
+* [Azure DevOps: VM Deployment Environments](https://www.freshbrewed.science/azure-devops-vm-deployment-environments/index.html)
+* [Collect custom logs with Log Analytics agent in Azure Monitor](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/data-sources-custom-logs)
 
