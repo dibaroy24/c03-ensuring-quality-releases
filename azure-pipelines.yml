@@ -178,59 +178,66 @@ stages:
             inputs:
               jmeterVersion: '5.2.1'
           
-          - task: Bash@3
-            displayName: 'Run JMeter tests'
-            inputs:
-              targetType: 'inline'
-              script: |
-                #! /bin/bash
-
-                # --------- Run stress test --------------
-                echo "Running stress test ..."
-                jmeter -n -t stress_test_suite.jmx -l stress_test_results.csv -e -o stress_test_report
-
-                # --------- Run endurance test --------------
-                echo "Running endurance test ..."
-                jmeter -n -t endurance_test_suite.jmx -l endurance_test_results.csv -e -o endurance_test_report
-              workingDirectory: 'jmeter'
-
-          - task: PublishPipelineArtifact@1
-            displayName: 'Publish JMeter Pipeline Artifacts'
-            inputs:
-              targetPath: 'jmeter'
-              artifact: 'jmeter-tests'
-              publishLocation: 'pipeline'
-
-
           # - task: Bash@3
           #   displayName: 'Run JMeter tests'
           #   inputs:
           #     targetType: 'inline'
           #     script: |
           #       #! /bin/bash
-                  
-          #       # --------- Preparing to run Jmeter tests HTML report directories -------------
-          #       echo "Changing into Project jmeter dir ..."
-          #       cd $(Pipeline.Workspace)/project/s/jmeter
-          #       echo "Creating HTML report directories ..."
-          #       # echo "Creating report directories ..."
-          #       # mkdir stress_test_report endurance_test_report
-          #       # echo "Clearing previous results and reports ..."
-          #       mkdir stress_test_html_report endurance_test_html_report
-          #       echo "Clearing previous results and html reports ..."
-          #       rm -rf *.csv stress_test_html_report/* endurance_test_html_report/*
-          #       # rm -rf *.jtl stress_test_report/* endurance_test_report/*
-          #       echo "Preparing to run Jmeter tests ..."
-                  
+
           #       # --------- Run stress test --------------
           #       echo "Running stress test ..."
-          #       # jmeter -n -t stress_test_suite.jmx -l stress_test_result.jtl -e -o stress_test_report/
-          #       jmeter -n -t stress_test_suite.jmx -l stress_test_results.csv -e -o stress_test_html_report/
-                                  
+          #       jmeter -n -t stress_test_suite.jmx -l stress_test_results.csv -e -o stress_test_report
+
           #       # --------- Run endurance test --------------
           #       echo "Running endurance test ..."
-          #       # jmeter -n -t endurance_test_suite.jmx -l endurance_test_results.jtl -e -o endurance_test_report/
-          #       jmeter -n -t endurance_test_suite.jmx -l endurance_test_results.csv -e -o endurance_test_html_report/
+          #       jmeter -n -t endurance_test_suite.jmx -l endurance_test_results.csv -e -o endurance_test_report
+          #     workingDirectory: 'jmeter'
+
+          # - task: PublishPipelineArtifact@1
+          #   displayName: 'Publish JMeter Pipeline Artifacts'
+          #   inputs:
+          #     targetPath: 'jmeter'
+          #     artifact: 'jmeter-tests'
+          #     publishLocation: 'pipeline'
+
+
+          - task: Bash@3
+            displayName: 'Run JMeter tests'
+            inputs:
+              targetType: 'inline'
+              script: |
+                #! /bin/bash
+                  
+                # --------- Preparing to run Jmeter tests HTML report directories -------------
+                echo "Changing into Project jmeter dir ..."
+                cd $(Pipeline.Workspace)/project/s/jmeter
+                echo "Creating HTML report directories ..."
+                # echo "Creating report directories ..."
+                # mkdir stress_test_report endurance_test_report
+                # echo "Clearing previous results and reports ..."
+                mkdir stress_test_html_report endurance_test_html_report
+                echo "Clearing previous results and html reports ..."
+                rm -rf *.csv stress_test_html_report/* endurance_test_html_report/*
+                # rm -rf *.jtl stress_test_report/* endurance_test_report/*
+                echo "Preparing to run Jmeter tests ..."
+                  
+                # --------- Run stress test --------------
+                echo "Running stress test ..."
+                # jmeter -n -t stress_test_suite.jmx -l stress_test_result.jtl -e -o stress_test_report/
+                jmeter -n -t stress_test_suite.jmx -l stress_test_results.csv -e -o stress_test_html_report/
+                                  
+                # --------- Run endurance test --------------
+                echo "Running endurance test ..."
+                # jmeter -n -t endurance_test_suite.jmx -l endurance_test_results.jtl -e -o endurance_test_report/
+                jmeter -n -t endurance_test_suite.jmx -l endurance_test_results.csv -e -o endurance_test_html_report/
+
+          - task: PublishPipelineArtifact@1
+            displayName: 'Publish JMeter Test Artifacts'
+            inputs:
+              targetPath: '$(Pipeline.Workspace)/project/s/jmeter'
+              artifact: 'jmeter-tests'
+              publishLocation: 'pipeline'
           
           # - task: PublishBuildArtifacts@1
           #   displayName: 'Publish JMeter Test Results'
