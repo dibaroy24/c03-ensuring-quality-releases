@@ -178,66 +178,29 @@ stages:
             inputs:
               jmeterVersion: '5.2.1'
           
-          # - task: UsePythonVersion@0
-          #   inputs:
-          #     versionSpec: '3.7'
-          #     addToPath: true
-          #     architecture: 'x64'
-          
-          - task: TaurusInstaller@0
+          - task: Bash@3
+            displayName: 'Run JMeter tests'
             inputs:
-              taurusVersion: '1.14.1'
-              pythonCommand: 'python3'
-          
-          - task: TaurusRunner@0
-            displayName: 'Run Stress Test'
-            inputs:
-              taurusConfig: |
-                execution:
-                - scenario:
-                    script: stress_test_suite.jmx
-                  # concurrency: 5
-                  # iterations: 10
-                  # ramp-up: 2s
-                
-                reporting:
-                - module: junit-xml
-                  filename: taurus-output/stress_test_results.xml
-              jmeterHome: '$(JMeterInstaller.JMeterHome)'
-              jmeterPath: '$(JMeterInstaller.JMeterPath)'
-              jmeterVersion: '$(JMeterInstaller.JMeterVersion)'
-              outputDir: 'taurus-output'
-          
-          - task: TaurusRunner@0
-            displayName: 'Run Endurance Test'
-            inputs:
-              taurusConfig: |
-                execution:
-                - scenario:
-                    script: endurance_test_suite.jmx
-                  # concurrency: 5
-                  # iterations: 10
-                  # ramp-up: 2s
-                
-                reporting:
-                - module: junit-xml
-                  filename: taurus-output/endurance_test_results.xml
-              jmeterHome: '$(JMeterInstaller.JMeterHome)'
-              jmeterPath: '$(JMeterInstaller.JMeterPath)'
-              jmeterVersion: '$(JMeterInstaller.JMeterVersion)'
-              outputDir: 'taurus-output'
+              targetType: 'inline'
+              script: |
+                #! /bin/bash
 
-          # - task: Bash@3
-          #   displayName: 'Run stress test'
-          #   inputs:
-          #     targetType: 'inline'
-          #     script: 'jmeter -n -t stress_test_suite.jmx -Jresdir=stress_test_results.csv -l stress_test_results.jtl -e -o /stress_test_html_report'
+                # --------- Run stress test --------------
+                echo "Running stress test ..."
+                jmeter -n -t stress_test_suite.jmx -l stress_test_results.csv -e -o stress_test_report
 
-          # - task: Bash@3
-          #   displayName: 'Run endurance test'
-          #   inputs:
-          #     targetType: 'inline'
-          #     script: 'jmeter -n -t endurance_test_suite.jmx -Jresdir=endurance_test_results.csv -l endurance_test_results.jtl -e -o /endurance_test_html_report'
+                # --------- Run endurance test --------------
+                echo "Running endurance test ..."
+                jmeter -n -t endurance_test_suite.jmx -l endurance_test_results.csv -e -o endurance_test_report
+              workingDirectory: 'jmeter'
+
+          - task: PublishPipelineArtifact@1
+            displayName: 'Publish JMeter Pipeline Artifacts'
+            inputs:
+              targetPath: 'jmeter'
+              artifact: 'jmeter-tests'
+              publishLocation: 'pipeline'
+
 
           # - task: Bash@3
           #   displayName: 'Run JMeter tests'
@@ -262,6 +225,7 @@ stages:
           #       # --------- Run stress test --------------
           #       echo "Running stress test ..."
           #       # jmeter -n -t stress_test_suite.jmx -l stress_test_result.jtl -e -o stress_test_report/
+          #       jmeter -n -t stress_test_suite.jmx -l stress_test_results.csv -e -o stress_test_html_report/
                                   
           #       # --------- Run endurance test --------------
           #       echo "Running endurance test ..."
