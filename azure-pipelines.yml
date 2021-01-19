@@ -178,11 +178,11 @@ stages:
             inputs:
               jmeterVersion: '5.2.1'
           
-          - task: UsePythonVersion@0
-            inputs:
-              versionSpec: '3.7'
-              addToPath: true
-              architecture: 'x64'
+          # - task: UsePythonVersion@0
+          #   inputs:
+          #     versionSpec: '3.7'
+          #     addToPath: true
+          #     architecture: 'x64'
           
           - task: TaurusInstaller@0
             inputs:
