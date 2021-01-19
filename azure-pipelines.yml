@@ -177,41 +177,101 @@ stages:
             displayName: 'Install JMeter'
             inputs:
               jmeterVersion: '5.2.1'
-
-          - task: Bash@3
-            displayName: 'Run JMeter tests'
-            inputs:
-              targetType: 'inline'
-              script: |
-                #! /bin/bash
-                  
-                # --------- Preparing to run Jmeter tests HTML report directories -------------
-                echo "Changing into Project jmeter dir ..."
-                cd $(Pipeline.Workspace)/project/s/jmeter
-                echo "Creating HTML report directories ..."
-                # echo "Creating report directories ..."
-                # mkdir stress_test_report endurance_test_report
-                # echo "Clearing previous results and reports ..."
-                mkdir stress_test_html_report endurance_test_html_report
-                echo "Clearing previous results and html reports ..."
-                rm -rf *.csv stress_test_html_report/* endurance_test_html_report/*
-                # rm -rf *.jtl stress_test_report/* endurance_test_report/*
-                echo "Preparing to run Jmeter tests ..."
-                  
-                # --------- Run stress test --------------
-                echo "Running stress test ..."
-                # jmeter -n -t stress_test_suite.jmx -l stress_test_result.jtl -e -o stress_test_report/
-                jmeter -n -t stress_test_suite.jmx -l stress_test_result.csv -e -o stress_test_html_report/
-                  
-                # --------- Run endurance test --------------
-                echo "Running endurance test ..."
-                # jmeter -n -t endurance_test_suite.jmx -l endurance_test_results.jtl -e -o endurance_test_report/
-                jmeter -n -t endurance_test_suite.jmx -l endurance_test_results.csv -e -o endurance_test_html_report/
           
-          - task: PublishBuildArtifacts@1
-            displayName: 'Publish JMeter Test Results'
+          - task: UsePythonVersion@0
             inputs:
-              PathtoPublish: './jmeter'
-              ArtifactName: 'jmeter'
-              publishLocation: 'Container'
+              versionSpec: '3.7'
+              addToPath: true
+              architecture: 'x64'
+          
+          - task: TaurusInstaller@0
+            inputs:
+              taurusVersion: '1.14.1'
+              pythonCommand: 'python3'
+          
+          - task: TaurusRunner@0
+            displayName: 'Run Stress Test'
+            inputs:
+              taurusConfig: |
+                execution:
+                - scenario:
+                    script: stress_test_suite.jmx
+                  # concurrency: 5
+                  # iterations: 10
+                  # ramp-up: 2s
+                
+                reporting:
+                - module: junit-xml
+                  filename: taurus-output/stress_test_results.xml
+              jmeterHome: '$(JMeterInstaller.JMeterHome)'
+              jmeterPath: '$(JMeterInstaller.JMeterPath)'
+              jmeterVersion: '$(JMeterInstaller.JMeterVersion)'
+              outputDir: 'taurus-output'
+          
+          - task: TaurusRunner@0
+            displayName: 'Run Endurance Test'
+            inputs:
+              taurusConfig: |
+                execution:
+                - scenario:
+                    script: endurance_test_suite.jmx
+                  # concurrency: 5
+                  # iterations: 10
+                  # ramp-up: 2s
+                
+                reporting:
+                - module: junit-xml
+                  filename: taurus-output/endurance_test_results.xml
+              jmeterHome: '$(JMeterInstaller.JMeterHome)'
+              jmeterPath: '$(JMeterInstaller.JMeterPath)'
+              jmeterVersion: '$(JMeterInstaller.JMeterVersion)'
+              outputDir: 'taurus-output'
+
+          # - task: Bash@3
+          #   displayName: 'Run stress test'
+          #   inputs:
+          #     targetType: 'inline'
+          #     script: 'jmeter -n -t stress_test_suite.jmx -Jresdir=stress_test_results.csv -l stress_test_results.jtl -e -o /stress_test_html_report'
+
+          # - task: Bash@3
+          #   displayName: 'Run endurance test'
+          #   inputs:
+          #     targetType: 'inline'
+          #     script: 'jmeter -n -t endurance_test_suite.jmx -Jresdir=endurance_test_results.csv -l endurance_test_results.jtl -e -o /endurance_test_html_report'
+
+          # - task: Bash@3
+          #   displayName: 'Run JMeter tests'
+          #   inputs:
+          #     targetType: 'inline'
+          #     script: |
+          #       #! /bin/bash
+                  
+          #       # --------- Preparing to run Jmeter tests HTML report directories -------------
+          #       echo "Changing into Project jmeter dir ..."
+          #       cd $(Pipeline.Workspace)/project/s/jmeter
+          #       echo "Creating HTML report directories ..."
+          #       # echo "Creating report directories ..."
+          #       # mkdir stress_test_report endurance_test_report
+          #       # echo "Clearing previous results and reports ..."
+          #       mkdir stress_test_html_report endurance_test_html_report
+          #       echo "Clearing previous results and html reports ..."
+          #       rm -rf *.csv stress_test_html_report/* endurance_test_html_report/*
+          #       # rm -rf *.jtl stress_test_report/* endurance_test_report/*
+          #       echo "Preparing to run Jmeter tests ..."
+                  
+          #       # --------- Run stress test --------------
+          #       echo "Running stress test ..."
+          #       # jmeter -n -t stress_test_suite.jmx -l stress_test_result.jtl -e -o stress_test_report/
+                                  
+          #       # --------- Run endurance test --------------
+          #       echo "Running endurance test ..."
+          #       # jmeter -n -t endurance_test_suite.jmx -l endurance_test_results.jtl -e -o endurance_test_report/
+          #       jmeter -n -t endurance_test_suite.jmx -l endurance_test_results.csv -e -o endurance_test_html_report/
+          
+          # - task: PublishBuildArtifacts@1
+          #   displayName: 'Publish JMeter Test Results'
+          #   inputs:
+          #     PathtoPublish: 'jmeter'
+          #     ArtifactName: 'jmeter'
+          #     publishLocation: 'Container'
 
