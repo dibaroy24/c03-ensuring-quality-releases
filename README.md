@@ -152,21 +152,25 @@ Important -> You will need to [add the chromedriver to PATH](https://sites.googl
 
     ![img-9](project-screenshots/jmeter-test-run-capture.png)
 
+    ![img-10](project-screenshots/jmeter-stress-test-result-capture.png)
+
+    ![img-11](project-screenshots/jmeter-endurance-test-result-capture.png)
+
 6. For Azure Monitor:
 
     * Configure an Action Group (email)
     * Configure an alert to trigger given a condition from the AppService
     * The time the alert triggers and the time the Performance test is executed ought to be very close.
 
-    ![img-10](project-screenshots/azure-monitoring-data-out-metrics-capture.png)
+    ![img-12](project-screenshots/azure-monitoring-data-out-metrics-capture.png)
 
-    ![img-11](project-screenshots/azure-alert-capture.png)
+    ![img-13](project-screenshots/azure-alert-capture.png)
 
-    ![img-12](project-screenshots/azure-monitor-email-alert-capture.png)
+    ![img-14](project-screenshots/azure-monitor-email-alert-capture.png)
 
 7. Direct the output of the Selenium Test Suite to a log file, and execute the Test Suite. Configure custom logging in Azure Monitor to ingest this log file. This may be done non-CI/CD.
 
-![img-13](project-screenshots/azure-log-analytics-query-result-capture.png)
+![img-15](project-screenshots/azure-log-analytics-query-result-capture.png)
 
 ### The files included are
 
@@ -174,6 +178,8 @@ Important -> You will need to [add the chromedriver to PATH](https://sites.googl
 * /project-screenshots: Folder containing the screenshots of the results
 * /infra-provision-pipeline: Folder containing the azure-pipelines.yml file that was used to build the infrastructure
 * selenium_log.txt: The text file (residing under selenium folder) containing the Selenium logs which can be used to configure custom logging in Azure Monitor
+* /jmeter/stress_test_html_report: Folder containing the HTML report for the JMeter Stress Test
+* /jmeter/endurance_test_html_report: Folder containing the HTML report for the JMeter Endurance Test
 ```
 
 ### Other Helpful Resources
@@ -182,5 +188,6 @@ Please see below some of the references that might be helpful in carrying out th
 
 * [Deploying Terraform Infrastructure using Azure DevOps Pipelines Step by Step](https://gmusumeci.medium.com/deploying-terraform-infrastructure-using-azure-devops-pipelines-step-by-step-advanced-1281b4ee15d1)
 * [Azure DevOps: VM Deployment Environments](https://www.freshbrewed.science/azure-devops-vm-deployment-environments/index.html)
+* [How to Configure postman / newman API tests in Azure DevOps or TFS and Publish HTML Results?](https://medium.com/@ganeshsirsi/how-to-configure-postman-newman-api-tests-in-azure-devops-or-tfs-and-publish-html-results-caf60a25c8b9)
 * [Collect custom logs with Log Analytics agent in Azure Monitor](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/data-sources-custom-logs)
 
