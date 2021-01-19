@@ -177,7 +177,7 @@ stages:
             displayName: 'Install JMeter'
             inputs:
               jmeterVersion: '5.2.1'
-          
+
           - task: Bash@3
             displayName: 'Run JMeter tests'
             inputs:
@@ -207,4 +207,11 @@ stages:
                 echo "Running endurance test ..."
                 jmeter -n -t endurance_test_suite.jmx -l endurance_test_results.jtl -e -o endurance_test_report/
                 # jmeter -n -t endurance_test_suite.jmx -l endurance_test_results.csv -e -o endurance_test_html_report/
+          
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish JMeter Test Results'
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)/jmeter'
+              ArtifactName: 'jmeter'
+              publishLocation: 'Container'
 
