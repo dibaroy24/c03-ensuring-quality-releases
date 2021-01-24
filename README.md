@@ -1,4 +1,5 @@
-[![Build Status](https://dev.azure.com/dibakarroy24/ensure-quality-release/_apis/build/status/dibaroy24.c03-ensuring-quality-releases?branchName=master)](https://dev.azure.com/dibakarroy24/ensure-quality-release/_build/latest?definitionId=34&branchName=master)
+<!-- [![Build Status](https://dev.azure.com/dibakarroy24/ensure-quality-release/_apis/build/status/dibaroy24.c03-ensuring-quality-releases?branchName=master)](https://dev.azure.com/dibakarroy24/ensure-quality-release/_build/latest?definitionId=34&branchName=master) -->
+https://dev.azure.com/dibakarroy24/ensure-quality-release/_apis/build/status/dibaroy24.c03-ensuring-quality-releases?branchName=master
 
 # Ensuring Quality Releases: Building a Quality Assurance Pipeline using Azure DevOps
 
